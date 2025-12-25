@@ -1,93 +1,38 @@
-body, html {
-    margin: 0;
-    padding: 0;
+/* 팝업 전체 배경 */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 9999; /* 모든 요소보다 위에 오도록 매우 높게 설정 */
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* 스크롤 방지 */
+    background-color: rgba(0, 0, 0, 0.9); /* 배경을 더 어둡게 */
+    justify-content: center; /* 자식 요소를 가로 중앙 */
+    align-items: center;     /* 자식 요소를 세로 중앙 */
 }
 
-/* 인트로 화면 */
-#intro-screen {
-    position: fixed;
-    width: 100%; height: 100%;
-    background-color: #05140b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    text-align: center;
-}
-
-.surprise-text {
-    font-size: 3rem; /* 모바일에 맞게 조절 */
-    color: #f9d71c;
-    animation: pulse 1s infinite alternate;
-}
-
-/* 메인 화면 배경 */
-#main-content {
-    width: 100%; height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url('my-background.jpg'); 
-    background-size: cover;
-    background-position: center;
-}
-
-.container {
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
-    width: 85%; /* 모바일에서 양옆 여백 확보 */
-    max-width: 400px; /* 너무 커지지 않게 제한 */
-    color: white;
-}
-
-/* 영상 박스 - 모바일에서 꽉 차게 */
-.video-box {
-    position: relative;
-    padding-bottom: 56.25%;
-    height: 0;
-    margin: 15px 0;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.video-box iframe {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-}
-
-/* 팝업창 모바일 최적화 */
+/* 팝업 박스 디자인 */
 .modal-content {
     background-color: #fff;
-    margin: 30% auto; /* 모바일에서 중앙 위치 조절 */
-    padding: 20px;
-    border-radius: 15px;
-    width: 80%;
+    padding: 30px;
+    border-radius: 20px;
+    width: 85%;
+    max-width: 350px;
+    position: relative; /* 닫기 버튼 기준점 */
     color: #333;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
-.wish-btn {
-    background-color: #d42426;
-    color: white;
-    padding: 15px 30px; /* 터치하기 편하게 크게 */
-    border-radius: 50px;
-    border: none;
-    font-size: 1.1rem;
+/* 닫기 버튼 크기 키우기 (터치하기 쉽게) */
+.close {
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    font-size: 40px; /* 크기를 더 키움 */
     font-weight: bold;
-}
-
-/* 눈송이 애니메이션 */
-.snowflake {
-    position: fixed;
-    top: -50px;
-    z-index: 5;
-    animation: fall linear forwards;
-}
-
-@keyframes fall {
-    to { transform: translateY(110vh) rotate(360deg); }
+    color: #d42426;
+    cursor: pointer;
+    padding: 10px; /* 터치 영역 확장 */
 }
