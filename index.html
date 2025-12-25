@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="intro-screen" onclick="startPage()">
+    <div id="intro-screen">
         <div class="intro-content">
             <h1 class="surprise-text">SURPRISE!<br>🎁</h1>
             <p>화면을 터치해 보세요</p>
@@ -16,6 +16,7 @@
 
     <div id="main-content" style="display: none;">
         <div class="snow-container"></div>
+
         <div class="container">
             <h1>🎄 Merry Christmas! 🎄</h1>
             
@@ -31,46 +32,99 @@
             </div>
 
             <p class="message">Mi amor Kelvin<br>feliz Navidad</p>
-            <button class="wish-btn" onclick="openModal()">它是什么</button>
+            <button class="wish-btn">它是什么</button>
         </div>
     </div>
 
     <div id="myModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span class="close">&times;</span>
             <div class="modal-body">
-                <h2>🎁 Message</h2>
+                <h2>🎁 Mensaje Especial</h2>
                 <hr>
-                <p>Kelvin, 올 한 해도 수고 많았어요!</p>
-                <p>행복한 크리스마스 보내세요.</p>
-                <h3 style="color: #d42426;">Merry Christmas! ❤️</h3>
+                <p>Feliz de conocerte este año. Entre risas, llantos y peleas, soy muy feliz contigo. ❤️</p>
             </div>
         </div>
     </div>
 
     <script>
-        function startPage() {
-            document.getElementById('intro-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'flex';
-            const videoId = "Ash3MpGRI9E";
-            document.getElementById('yt-video').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&loop=1&playlist=${videoId}&start=44`;
-            setInterval(createSnow, 200);
-        }
+        // DOMContentLoaded: HTML 문서 로드 완료 후 스크립트 실행
+        document.addEventListener('DOMContentLoaded', () => {
+            const introScreen = document.getElementById('intro-screen');
+            const mainContent = document.getElementById('main-content');
+            const ytVideo = document.getElementById('yt-video');
+            const wishBtn = document.querySelector('.wish-btn');
+            const modal = document.getElementById("myModal");
+            const closeModalBtn = modal.querySelector('.close');
 
-        function createSnow() {
-            const snowContainer = document.querySelector('.snow-container');
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            snowflake.textContent = '🖕'; 
-            snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-            snowflake.style.fontSize = Math.random() * 10 + 20 + 'px';
-            snowContainer.appendChild(snowflake);
-            setTimeout(() => { snowflake.remove(); }, 5000);
-        }
+            // 인트로 화면 클릭/터치 시 메인 페이지 로드
+            introScreen.addEventListener('click', startPage);
+            introScreen.addEventListener('touchend', startPage); // 모바일 터치 대응
 
-        function openModal() { document.getElementById("myModal").style.display = "block"; }
-        function closeModal() { document.getElementById("myModal").style.display = "none"; }
+            function startPage() {
+                introScreen.style.display = 'none';
+                mainContent.style.display = 'flex'; // CSS에서 flex로 중앙 정렬
+
+                // 유튜브 영상 자동 재생 (사용자 인터랙션 후)
+                const videoId = "Ash3MpGRI9E";
+                ytVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&loop=1&playlist=${videoId}&start=44`;
+                
+                // 눈 내리기 시작
+                setInterval(createSnow, 150);
+            }
+
+            // 눈송이 생성 (🖕)
+            function createSnow() {
+                const snowContainer = document.querySelector('.snow-container');
+                if (!snowContainer) return; // 컨테이너 없으면 중단
+                
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.textContent = '🖕'; 
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+                snowflake.style.opacity = Math.random();
+                snowflake.style.fontSize = Math.random() * 15 + 15 + 'px';
+
+                snowContainer.appendChild(snowflake);
+                setTimeout(() => { snowflake.remove(); }, 5000);
+            }
+
+            // 팝업 열기/닫기
+            function openModal() {
+                modal.style.display = "flex";
+            }
+
+            function closeModal() {
+                modal.style.display = "none";
+            }
+
+            // 버튼 클릭/터치 이벤트 등록
+            wishBtn.addEventListener('click', openModal);
+            wishBtn.addEventListener('touchend', (e) => {
+                e.preventDefault(); // 기본 터치 이벤트 방지 (클릭 이벤트를 막지 않음)
+                openModal();
+            });
+
+            // 닫기 버튼 클릭/터치
+            closeModalBtn.addEventListener('click', closeModal);
+            closeModalBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                closeModal();
+            });
+
+            // 팝업 바깥 클릭/터치 시 닫기
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            window.addEventListener('touchend', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        });
     </script>
 </body>
 </html>
