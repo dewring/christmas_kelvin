@@ -1,38 +1,244 @@
-/* 팝업 전체 배경 */
-.modal {
-    display: none; 
-    position: fixed;
-    z-index: 9999; /* 모든 요소보다 위에 오도록 매우 높게 설정 */
-    left: 0;
-    top: 0;
+/* 공통 기본 설정 */
+body, html {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* 배경을 더 어둡게 */
-    justify-content: center; /* 자식 요소를 가로 중앙 */
-    align-items: center;     /* 자식 요소를 세로 중앙 */
+    overflow: hidden; /* 전체 스크롤 방지 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
 }
 
-/* 팝업 박스 디자인 */
+/* 인트로 화면 */
+#intro-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: #05140b; /* 어두운 초록 배경 */
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 최상단 */
+    cursor: pointer;
+    text-align: center;
+}
+
+.intro-content {
+    animation: fadeIn 1.5s ease-out; /* 부드럽게 나타나기 */
+}
+
+.surprise-text {
+    font-size: 4rem; /* 모바일에서 적당히 크게 */
+    color: #f9d71c;
+    animation: pulse 1.5s infinite alternate; /* 깜빡거리는 효과 */
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+#intro-screen p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+    from { transform: scale(1); text-shadow: 0 0 10px #f9d71c; }
+    to { transform: scale(1.05); text-shadow: 0 0 20px #f9d71c; }
+}
+
+/* 메인 콘텐츠 (기본 숨김) */
+#main-content {
+    width: 100%;
+    height: 100%;
+    display: none; /* JS에서 flex로 변경 */
+    flex-direction: column; /* 세로 정렬 */
+    justify-content: center;
+    align-items: center;
+    background-image: url('background.jpg'); /* 배경 이미지 파일명 적용 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 1; /* 눈송이보다 아래, 팝업보다 아래 */
+}
+
+/* 눈송이 컨테이너 (메인 콘텐츠 위에 위치) */
+.snow-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 5; /* 눈송이는 메인 콘텐츠 위에 */
+    pointer-events: none; /* 눈송이가 클릭을 방해하지 않도록 */
+}
+
+/* 메인 페이지의 중앙 박스 */
+.container {
+    position: relative;
+    z-index: 10; /* 영상과 버튼이 있는 박스 */
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    width: 90%; /* 모바일에서 양옆 여백 */
+    max-width: 600px; /* 데스크톱에서 너무 커지지 않게 */
+    box-shadow: 0 0 25px rgba(0,0,0,0.4);
+}
+
+.container h1 {
+    font-size: 2.2rem; /* 모바일에 맞게 조절 */
+    margin-bottom: 20px;
+}
+
+.container p.message {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 15px 0;
+}
+
+/* 유튜브 영상 박스 (반응형으로 확대) */
+.video-box {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 비율 유지 */
+    height: 0;
+    margin: 20px auto; /* 중앙 정렬 */
+    width: 100%; /* 부모 컨테이너에 꽉 차게 */
+    border-radius: 12px;
+    overflow: hidden;
+    z-index: 1; /* 영상이 다른 요소 가리지 않게 */
+}
+
+.video-box iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* 버튼 디자인 */
+.wish-btn {
+    position: relative;
+    z-index: 20; /* 영상보다 위에 있게 */
+    background-color: #d42426;
+    color: white;
+    padding: 15px 40px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    -webkit-tap-highlight-color: transparent; /* 모바일 터치 시 파란 박스 제거 */
+}
+
+.wish-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 눈송이 스타일 */
+.snowflake {
+    position: fixed;
+    top: -50px;
+    user-select: none;
+    pointer-events: none; /* 눈송이가 클릭/터치 방해하지 않도록 */
+    color: white;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* --- 팝업 (모달) 스타일 --- */
+.modal {
+    display: none; /* 초기에는 숨김 */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* 배경 더 어둡게 */
+    z-index: 9999 !important; /* 항상 최상단 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center;     /* 세로 중앙 정렬 */
+    padding: 20px; /* 모바일 양옆 여백 */
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+}
+
 .modal-content {
     background-color: #fff;
     padding: 30px;
     border-radius: 20px;
-    width: 85%;
-    max-width: 350px;
-    position: relative; /* 닫기 버튼 기준점 */
+    width: 100%; /* 모바일에서 화면 폭에 가깝게 */
+    max-width: 380px; /* 데스크톱에서 너무 커지지 않게 */
     color: #333;
+    position: relative;
     text-align: center;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    line-height: 1.6;
 }
 
-/* 닫기 버튼 크기 키우기 (터치하기 쉽게) */
+.modal-content h2 {
+    color: #d42426;
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+.modal-content hr {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 20px 0;
+}
+
+.modal-content p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* 닫기 버튼 */
 .close {
     position: absolute;
-    right: 15px;
-    top: 5px;
-    font-size: 40px; /* 크기를 더 키움 */
+    top: 10px; right: 15px;
+    font-size: 38px; /* 터치하기 쉽도록 크게 */
     font-weight: bold;
     color: #d42426;
     cursor: pointer;
-    padding: 10px; /* 터치 영역 확장 */
+    padding: 8px; /* 터치 영역 확장 */
+    -webkit-tap-highlight-color: transparent;
+}
+
+.close:hover {
+    color: #ff0000;
+}
+
+/* 모바일 화면 (width 768px 이하) */
+@media (max-width: 768px) {
+    .surprise-text {
+        font-size: 3.5rem; /* 모바일에서 적절하게 작게 */
+    }
+    .container h1 {
+        font-size: 1.8rem;
+    }
+    .container p.message {
+        font-size: 1rem;
+    }
+    .wish-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+    .modal-content {
+        max-width: 300px; /* 모달도 모바일에 맞게 조절 */
+    }
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+    .modal-content p {
+        font-size: 0.95rem;
+    }
 }
