@@ -1,77 +1,57 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>abrirlo!</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="intro-screen" onclick="startPage()">
-        <div class="intro-content">
-            <h1 class="surprise-text">SURPRISE!<br>🎁</h1>
-            <p>화면을 터치해 보세요</p>
-        </div>
-    </div>
+<script>
+    // 1. 페이지 시작 (인트로 -> 메인)
+    function startPage() {
+        document.getElementById('intro-screen').style.display = 'none';
+        document.getElementById('main-content').style.display = 'flex';
+        
+        const videoId = "Ash3MpGRI9E";
+        document.getElementById('yt-video').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&loop=1&playlist=${videoId}&start=44`;
+        
+        setInterval(createSnow, 200);
+    }
 
-    <div id="main-content" style="display: none;">
-        <div class="snow-container"></div>
-        <div class="container">
-            <h1>🎄 Merry Christmas! 🎄</h1>
-            
-            <div class="video-box">
-                <iframe 
-                    id="yt-video"
-                    src="" 
-                    title="YouTube video player" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </div>
+    // 2. 눈 내리기 (🖕)
+    function createSnow() {
+        const snowContainer = document.querySelector('.snow-container');
+        if(!snowContainer) return; // 컨테이너가 없으면 실행 안함
 
-            <p class="message">Mi amor Kelvin<br>feliz Navidad</p>
-            <button class="wish-btn" onclick="openModal()">它是什么</button>
-        </div>
-    </div>
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.textContent = '🖕'; 
+        snowflake.style.left = Math.random() * 100 + 'vw';
+        snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+        snowflake.style.opacity = Math.random();
+        snowflake.style.fontSize = Math.random() * 15 + 15 + 'px';
 
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div class="modal-body">
-                <h2>🎁 Message</h2>
-                <hr>
-                <p>Feliz de conocerte este año</p>
-                <p>Entre risas, llantos y peleas,</p>
-                <p>soy muy feliz contigo</p>
-                <h3 style="color: #d42426;">Merry Christmas! ❤️</h3>
-            </div>
-        </div>
-    </div>
+        snowContainer.appendChild(snowflake);
+        setTimeout(() => { snowflake.remove(); }, 5000);
+    }
 
-    <script>
-        function startPage() {
-            document.getElementById('intro-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'flex';
-            const videoId = "Ash3MpGRI9E";
-            document.getElementById('yt-video').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&loop=1&playlist=${videoId}&start=44`;
-            setInterval(createSnow, 200);
+    // 3. 팝업 제어 (모바일 최적화)
+    const modal = document.getElementById("myModal");
+
+    function openModal() {
+        if (modal) {
+            modal.style.display = "flex"; // block 대신 flex로 중앙 정렬 유도
         }
+    }
 
-        function createSnow() {
-            const snowContainer = document.querySelector('.snow-container');
-            const snowflake = document.createElement('div');
-            snowflake.classList.add('snowflake');
-            snowflake.textContent = '🖕'; 
-            snowflake.style.left = Math.random() * 100 + 'vw';
-            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
-            snowflake.style.fontSize = Math.random() * 10 + 20 + 'px';
-            snowContainer.appendChild(snowflake);
-            setTimeout(() => { snowflake.remove(); }, 5000);
+    function closeModal() {
+        if (modal) {
+            modal.style.display = "none";
         }
+    }
 
-        function openModal() { document.getElementById("myModal").style.display = "block"; }
-        function closeModal() { document.getElementById("myModal").style.display = "none"; }
-    </script>
-</body>
-</html>
+    // 팝업 바깥쪽 클릭 시 닫기 (모바일 터치 대응)
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    });
+    
+    // 모바일 전용 터치 이벤트 추가 (클릭이 안 먹힐 경우 대비)
+    document.querySelector('.wish-btn').addEventListener('touchend', function(e) {
+        e.preventDefault(); // 기본 동작 방지
+        openModal();
+    });
+</script>
