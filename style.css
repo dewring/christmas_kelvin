@@ -1,0 +1,80 @@
+/* 인트로 화면 스타일 */
+#intro-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: #05140b; /* 어두운 초록 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.surprise-text {
+    font-size: 5rem;
+    color: #f9d71c;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); text-shadow: 0 0 10px #f9d71c; }
+    to { transform: scale(1.1); text-shadow: 0 0 30px #f9d71c; }
+}
+
+/* 메인 배경 설정 (이미지 포함) */
+#main-content {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image: url('background.jpeg'); /* 본인의 디자인 파일명 */
+    background-size: cover;
+    background-position: center;
+}
+
+/* 기존 컨테이너 및 기타 스타일 유지 */
+.container {
+    position: relative;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.75);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 800px;
+    width: 90%;
+    color: white;
+}
+
+.video-box {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    margin: 20px 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+.wish-btn {
+    background-color: #d42426;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.snowflake { position: fixed; top: -50px; z-index: 5; animation: fall linear forwards; }
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+/* 팝업 스타일 */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); }
+.modal-content { background-color: #fff; margin: 15% auto; padding: 30px; border-radius: 15px; width: 80%; max-width: 400px; text-align: center; color: #333; position: relative; }
+.close { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; color: #aaa; }
