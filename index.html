@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>abrirlo!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="intro-screen" onclick="startPage()">
+        <div class="intro-content">
+            <h1 class="surprise-text">SURPRISE! 🎁</h1>
+            <p>화면을 클릭해 보세요</p>
+        </div>
+    </div>
+
+    <div id="main-content" style="display: none;">
+        <div class="snow-container"></div>
+
+        <div class="container">
+            <h1>🎄 Merry Christmas! 🎄</h1>
+            
+            <div class="video-box">
+                <iframe 
+                    id="yt-video"
+                    src="" 
+                    title="YouTube video player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <p class="message">Mi amor Kelvin feliz Navidad</p>
+            <button class="wish-btn" onclick="openModal()">它是什么</button>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="modal-body">
+                <h2>🎁 惊喜 선물 메시지</h2>
+                <hr>
+                <p>Feliz de conocerte este año</p>
+                <p>Entre risas, llantos y peleas,</p>
+                <p>soy muy feliz contigo</p>
+                <h3 style="color: #d42426;">Merry Christmas! ❤️</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 화면 전환 함수
+        function startPage() {
+            // 인트로 숨기고 메인 보이기
+            document.getElementById('intro-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'flex';
+            
+            // 영상 주소를 이때 넣어주어 자동 재생 유도
+            const videoId = "Ash3MpGRI9E";
+            document.getElementById('yt-video').src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&loop=1&playlist=${videoId}&start=44`;
+            
+            // 눈 내리기 시작
+            setInterval(createSnow, 150);
+        }
+
+        // 눈송이 생성 (🖕)
+        function createSnow() {
+            const snowContainer = document.querySelector('.snow-container');
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.textContent = '🖕'; 
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snowflake.style.opacity = Math.random();
+            snowflake.style.fontSize = Math.random() * 15 + 15 + 'px';
+
+            snowContainer.appendChild(snowflake);
+            setTimeout(() => { snowflake.remove(); }, 5000);
+        }
+
+        // 팝업 함수
+        function openModal() { document.getElementById("myModal").style.display = "block"; }
+        function closeModal() { document.getElementById("myModal").style.display = "none"; }
+    </script>
+</body>
+</html>
